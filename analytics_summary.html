@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Analytics Summary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('create_assessment') }}">Create New Assessment</a>
+        <a href="{{ url_for('recent_activities') }}">Recent Activities</a>
+        <a href="{{ url_for('analytics_summary') }}">Assessment Analytics</a>
+    </nav>
+    <div class="container">
+        <h1>Assessment Analytics Summary</h1>
+        <p>Total Assessments: {{ analytics.total_assessments }}</p>
+        <p>Recent Assessments (Last 30 Days): {{ analytics.recent_assessments }}</p>
+        
+        <h2>Assessments by Month</h2>
+        <ul>
+            {% for item in analytics.assessment_by_month %}
+                <li>{{ item.month }}: {{ item.count }} assessments</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

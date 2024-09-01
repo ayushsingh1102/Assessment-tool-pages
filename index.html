@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>My Assessments</h1>
+<ul>
+    {% for assessment in assessments %}
+    <li>
+        <a href="{{ url_for('update_assessment', id=assessment.id) }}">{{ assessment.title }}</a>
+        <form action="{{ url_for('delete_assessment', id=assessment.id) }}" method="POST" style="display:inline;">
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Assessment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='assessment_take.css') }}">
+</head>
+<body>
+    <div class="container">
+        <form action="/" method="POST"></form>
+        <h1>{{ assessment.title }}</h1>
+        <p>{{ assessment.instructions }}</p>
+
+        <div class="timer">
+            Time Remaining: <span id="timer-display">{{ assessment.duration }} minutes</span>
+        </div>
+
+        <form method="POST">
+            {% for question in questions %}
+            <div class="question">
+                <h3>Question {{ loop.index }}: {{ question.question_text }}</h3>
+                <input type="hidden" name="question_id" value="{{ question.id }}">
+                <textarea name="response" rows="4"></textarea>
+            </div>
+            {% endfor %}
+            <button type="submit" name="save" class="btn">Save Progress</button>
+            <button type="submit" name="submit" class="btn">Submit Assessment</button>
+        </form>
+    </div>
+</body>
+</html>

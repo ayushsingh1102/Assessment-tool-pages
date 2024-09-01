@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create New Assessment</h1>
+<form action="{{ url_for('create_assessment') }}" method="POST">
+    <label for="title">Title:</label>
+    <input type="text" name="title" id="title" required><br>
+    <label for="description">Description:</label>
+    <textarea name="description" id="description" required></textarea><br>
+    <label for="type">Type:</label>
+    <select id="type" name="type" required>
+        <option value="quiz">Quiz</option>
+        <option value="assignment">Assignment</option>
+        <option value="survey">Survey</option>
+        <label for="question_bank">Question Bank:</label>
+    
+
+    </select><br>
+    <button type="submit">Create Assessment</button>
+</form>
+{% endblock %}

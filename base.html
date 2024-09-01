@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('create_assessment') }}">Create New Assessment</a>
+        <a href="{{ url_for('recent_activities') }}">Recent Activities</a>
+        <a href="{{ url_for('analytics_summary') }}">Assessment Analytics</a>
+        
+       
+    </nav>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+        
+        <!-- Search and Filtering -->
+        <div class="search-bar">
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" name="search" placeholder="Search by title or keywords" value="{{ request.args.get('search') }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="filter-bar">
+            <form action="{{ url_for('search') }}" method="get">
+                <label for="filter">Filter by:</label>
+                <select id="filter" name="filter">
+                    <option value="">All</option>
+                    <option value="recent" {% if request.args.get('filter') == 'recent' %}selected{% endif %}>Most Recent</option>
+                    <option value="oldest" {% if request.args.get('filter') == 'oldest' %}selected{% endif %}>Oldest</option>
+                    <option value="completed" {% if request.args.get('filter') == 'completed' %}selected{% endif %}>Completed</option>
+                    <option value="pending" {% if request.args.get('filter') == 'pending' %}selected{% endif %}>Pending</option>
+                </select>
+                <button type="submit">Apply Filter</button>
+            </form>
+        </div>
+
+        <!-- Assessments Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assessment in assessments %}
+                    <tr>
+                        <td>{{ assessment.title }}</td>
+                        <td>{{ assessment.description }}</td>
+                        <td>{{ assessment.type }}</td>
+                        <td>{{ assessment.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ assessment.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>
+                            <a href="{{ url_for('update_assessment', id=assessment.id) }}">Edit</a>
+                            <form action="{{ url_for('delete_assessment', id=assessment.id) }}" method="post" style="display:inline;">
+                                <button type="submit">Delete</button>
+                            </form>
+                            <a href="{{ url_for('create_question', assessment_id=assessment.id) }}">Add Question</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% block content %}{% endblock %}
+</body>
+</html>

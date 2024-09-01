@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Add Question to Assessment: {{ assessment.title }}</h1>
+<form action="{{ url_for('create_question', assessment_id=assessment.id) }}" method="POST">
+    <label for="text">Question Text:</label>
+    <textarea name="text" id="text" required></textarea><br>
+    <label for="type">Question Type:</label>
+    <select id="type" name="type" required>
+        <option value="multiple-choice">Multiple Choice</option>
+        <option value="short-answer">Short Answer</option>
+        <option value="essay">Essay</option>
+    </select><br>
+    <div id="options-container" style="display:none;">
+        <label for="options">Options (comma-separated):</label>
+        <input type="text" name="options" id="options"><br>
+    </div>
+    <button type="submit">Add Question</button>
+</form>
+
+<script>
+    document.getElementById('type').addEventListener('change', function () {
+        var optionsContainer = document.getElementById('options-container');
+        if (this.value === 'multiple-choice') {
+            optionsContainer.style.display = 'block';
+        } else {
+            optionsContainer.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
